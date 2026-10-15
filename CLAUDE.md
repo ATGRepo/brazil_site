@@ -3,6 +3,10 @@
 Site em português de expedições polares, publicado em destinospolares.com.br.
 Leia este arquivo antes de mudar qualquer coisa.
 
+As regras do Next.js desta versão estão em AGENTS.md, gerado pelo `next dev`:
+
+@AGENTS.md
+
 ## A Let's Go Polar é só leitura
 
 A Let's Go Polar (letsgopolar.com) é a base de conteúdo do Destinos Polares.
