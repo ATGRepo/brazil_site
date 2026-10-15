@@ -24,12 +24,28 @@ Nunca altere nada da Let's Go Polar. Isso vale para:
 
 Tudo o que você criar ou alterar fica no repositório `brazil_site`.
 
-## Credenciais
+## De onde ler
 
-A leitura pública da API do WordPress não precisa de senha. Para campos que a
-API pública não mostra (preços, datas, itinerários, cabines, descrição dos
-navios), a sessão lê as variáveis de ambiente `LGP_WP_USER` e
-`LGP_WP_APP_PASSWORD`. Esse usuário deve ter papel só de leitura.
+Tudo o que o Destinos Polares precisa da Let's Go Polar está público. Não é
+preciso senha, servidor MCP nem acesso ao banco do desk.
+
+| O quê | Onde |
+| --- | --- |
+| FAQs | API pública do WordPress, `letsgopolar.com/wp-json/wp/v2/faqs` |
+| Saídas, datas, cabines, preços, disponibilidade | `letsgopolar.com/all-trips/feed-current.json` |
+| Detalhe de uma viagem (itinerário, navio, cabines, fotos, condições) | `letsgopolar.com/all-trips/data/<slug>.json` |
+
+O feed é refeito a partir do banco do desk a cada 15 minutos. O guia
+`desk/docs/ACCESS.md` do repositório letsgopolar-desk é para quem altera o desk.
+Não use o caminho dele (Novamira, senha de aplicativo, `$wpdb`) a partir daqui.
+
+Preço, data e disponibilidade não se traduzem e podem ser atualizados direto do
+feed. Textos são traduzidos uma vez e de novo só quando mudam.
+
+Fotos são da Let's Go Polar e das operadoras. Não publique imagens no
+Destinos Polares sem confirmação do direito de uso.
+
+## Credenciais
 
 Nunca peça senha no chat e nunca grave credenciais no repositório. `.env` é
 ignorado pelo git.
