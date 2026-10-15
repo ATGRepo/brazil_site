@@ -93,11 +93,22 @@ model ExpeditionDestination {
 // Pergunta frequente (FAQ), agrupada por categoria
 model FaqItem {
   id        String   @id @default(cuid())
+  slug      String?  @unique
   category  String
   question  String
-  answer    String
+  answer    String // resposta curta; HTML simples nas FAQs vindas da Let's Go Polar
+  details   String? // resposta completa (HTML simples)
+  sources   String? // JSON-encoded string[] com as entradas da base de conhecimento citadas
+  checkedBy String?
+  checkedOn String?
+  related   String? // JSON-encoded string[] com os slugs das FAQs relacionadas
   order     Int      @default(0)
   published Boolean  @default(true)
+  // Item traduzido de letsgopolar.com. locked = true impede que a sincronização sobrescreva edições manuais.
+  sourceId       Int?      @unique
+  sourceSlug     String?
+  sourceModified DateTime?
+  locked         Boolean   @default(false)
   createdAt DateTime @default(now())
 
   @@index([published, category, order])

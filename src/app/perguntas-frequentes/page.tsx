@@ -41,7 +41,22 @@ export default async function FaqPage() {
                       </span>
                     </span>
                   </summary>
-                  <p className="mt-3 text-sm text-foreground/90">{item.answer}</p>
+                  {item.answer.trimStart().startsWith("<") ? (
+                    <div
+                      className="faq-html mt-3 text-sm text-foreground/90"
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    />
+                  ) : (
+                    <p className="mt-3 text-sm text-foreground/90">{item.answer}</p>
+                  )}
+                  {item.slug && (
+                    <Link
+                      href={`/perguntas-frequentes/${item.slug}`}
+                      className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
+                    >
+                      Ler a resposta completa →
+                    </Link>
+                  )}
                 </details>
               ))}
             </div>

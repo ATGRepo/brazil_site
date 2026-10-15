@@ -89,7 +89,7 @@ export async function getVesselBySlug(slug: string) {
 export async function getPublishedFaqItems() {
   const items = await prisma.faqItem.findMany({
     where: { published: true },
-    orderBy: [{ category: "asc" }, { order: "asc" }],
+    orderBy: [{ order: "asc" }, { question: "asc" }],
   });
 
   const byCategory = new Map<string, typeof items>();
@@ -102,4 +102,17 @@ export async function getPublishedFaqItems() {
     category,
     questions,
   }));
+}
+
+export async function getFaqItemBySlug(slug: string) {
+  return prisma.faqItem.findUnique({ where: { slug, published: true } });
+}
+
+export async function getFaqItemsBySlugs(slugs: string[]) {
+  if (slugs.length === 0) return [];
+  const items = await prisma.faqItem.findMany({
+    where: { slug: { in: slugs }, published: true },
+    select: { slug: true, question: true },
+  });
+  return slugs.flatMap((slug) => items.filter((item) => item.slug === slug));
 }

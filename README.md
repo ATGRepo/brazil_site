@@ -61,13 +61,43 @@ Modelos em `prisma/schema.prisma`:
 - `Vessel` — embarcações usadas nas expedições.
 - `Expedition` — pacotes/itinerários, com relação N:N com destinos e
   relação com uma embarcação.
-- `FaqItem` — perguntas frequentes, agrupadas por categoria.
+- `FaqItem` — perguntas frequentes, agrupadas por categoria. As que vêm de
+  letsgopolar.com guardam `sourceId`, `sourceSlug` e `sourceModified`.
 - `Inquiry` — solicitações recebidas pelo formulário de contato (nome,
   email, mensagem, expedição de interesse e status do envio de email).
 
 Campos de lista (destaques, itinerário, comodidades etc.) são guardados
 como texto JSON, já que SQLite não suporta arrays nativamente — veja os
 helpers de parsing em `src/lib/content.ts`.
+
+## Perguntas frequentes da Let's Go Polar
+
+As FAQs são traduções das perguntas publicadas em
+[letsgopolar.com/faqs](https://letsgopolar.com/faqs/). As traduções ficam em
+`content/lgp/faqs.pt.json`, que é a fonte do que vai para o banco. Cada item
+guarda o id, o slug e a data de alteração da FAQ original, para saber quando a
+versão em inglês mudou depois da tradução.
+
+Fluxo para manter em dia:
+
+1. `npm run lgp:faqs:check` lê a API pública de letsgopolar.com e lista as FAQs
+   novas, as alteradas depois da tradução e as removidas. O texto em inglês do
+   que falta traduzir vai para `content/lgp/faqs.pending.json`.
+2. Traduza esses itens e atualize `content/lgp/faqs.pt.json` (mesmo formato,
+   com `slug` em português e a nova `sourceModified`).
+3. `npm run lgp:faqs:import` grava tudo no banco. Cada resposta aparece em
+   `/perguntas-frequentes/<slug>`.
+
+Regras da importação:
+
+- Atualiza pelo id da FAQ original. Um item com `locked = true` no banco não é
+  sobrescrito, então marque assim o que você editou à mão.
+- FAQs removidas de letsgopolar.com são despublicadas, não apagadas.
+- A categoria "Sobre a Let's Go Polar" entra despublicada.
+- O HTML das respostas só pode ter tags de texto simples e `href`. A importação
+  falha se encontrar outra coisa.
+- Links entre FAQs viram links para as páginas em português. O link do
+  formulário de solicitação de viagem vira `/contato`.
 
 ## Produção
 
@@ -82,4 +112,6 @@ variáveis de SMTP com um provedor de envio de email transacional.
 - `npm run build` — build de produção.
 - `npm run start` — roda o build de produção.
 - `npm run lint` — checagem de lint.
-- `npm run seed` — popula o banco com o conteúdo de exemplo.
+- `npm run seed` — popula o banco com o conteúdo de exemplo e as FAQs traduzidas.
+- `npm run lgp:faqs:check` — compara as FAQs de letsgopolar.com com as traduções.
+- `npm run lgp:faqs:import` — grava as FAQs traduzidas no banco.

@@ -1,12 +1,14 @@
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { importFaqs, loadTranslations } from "../scripts/lgp/faqs";
 
 const adapter = new PrismaBetterSqlite3({
   url: process.env.DATABASE_URL ?? "file:./dev.db",
 });
 const prisma = new PrismaClient({ adapter });
 
-// Conteúdo de exemplo em português para popular o site durante o desenvolvimento.
+// Conteúdo de exemplo em português para popular o site durante o desenvolvimento
+// (destinos, embarcações e expedições). As FAQs vêm de content/lgp/faqs.pt.json.
 // Substitua por informações reais da operação antes de publicar em produção.
 
 const destinations = [
@@ -230,43 +232,6 @@ const expeditions = [
   },
 ];
 
-const faqItems = [
-  {
-    category: "Planejamento",
-    question: "Qual a melhor época para viajar à Antártica?",
-    answer:
-      "A temporada de expedições vai de outubro a março, verão no hemisfério sul. Cada mês oferece características diferentes: outubro e novembro têm paisagens de gelo mais intactas, dezembro e janeiro têm dias mais longos e filhotes de pinguim nascendo, e fevereiro e março concentram maior atividade de baleias.",
-    order: 1,
-  },
-  {
-    category: "Planejamento",
-    question: "Preciso de visto para embarcar em Ushuaia?",
-    answer:
-      "As exigências de visto dependem da nacionalidade do viajante e são de responsabilidade do próprio passageiro. Recomendamos verificar os requisitos junto ao consulado do país de embarque com antecedência.",
-    order: 2,
-  },
-  {
-    category: "A bordo",
-    question: "Como funcionam os desembarques em Zodiac?",
-    answer:
-      "Os desembarques são feitos em pequenos grupos, em botes infláveis Zodiac, sempre acompanhados por guias naturalistas da equipe de expedição. O número e a duração dos desembarques variam conforme as condições de tempo, mar e gelo no momento da viagem.",
-    order: 1,
-  },
-  {
-    category: "A bordo",
-    question: "É preciso ter experiência prévia em cruzeiros de expedição?",
-    answer:
-      "Não é necessária experiência prévia. A equipe de expedição orienta os passageiros em todas as etapas, desde o uso dos coletes salva-vidas até o comportamento adequado durante os desembarques com vida selvagem.",
-    order: 2,
-  },
-  {
-    category: "Reservas",
-    question: "Como faço para solicitar uma reserva?",
-    answer:
-      "As solicitações são feitas pelo formulário de contato do site ou diretamente por email. Nossa equipe responde com disponibilidade, valores e condições de pagamento para o itinerário escolhido.",
-    order: 1,
-  },
-];
 
 async function main() {
   for (const destination of destinations) {
@@ -319,16 +284,9 @@ async function main() {
     }
   }
 
-  for (const faq of faqItems) {
-    const existing = await prisma.faqItem.findFirst({
-      where: { category: faq.category, question: faq.question },
-    });
-    if (existing) {
-      await prisma.faqItem.update({ where: { id: existing.id }, data: faq });
-    } else {
-      await prisma.faqItem.create({ data: faq });
-    }
-  }
+  // FAQs reais, traduzidas de letsgopolar.com (ver scripts/sync-lgp-faqs.ts).
+  const faqs = await importFaqs(prisma, loadTranslations());
+  console.log(`FAQs: ${faqs.created} criadas, ${faqs.updated} atualizadas.`);
 
   console.log("Seed concluído: destinos, embarcações, expedições e FAQ.");
 }
