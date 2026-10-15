@@ -110,6 +110,19 @@ function block(html: string, cls: string, tag: string) {
   return m ? m[1].trim() : "";
 }
 
+// Os blocos de resposta podem ter divs internas (tabelas vêm dentro de
+// <div class="kc-tablewrap">), então um regex não guloso cortaria o bloco na
+// primeira </div>. Aqui o bloco vai até o início do bloco seguinte e as divs
+// internas são removidas.
+function contentBlock(html: string, cls: string) {
+  const start = html.indexOf(`<div class="${cls}">`);
+  if (start === -1) return "";
+  const from = start + `<div class="${cls}">`.length;
+  const next = html.slice(from).search(/<(div|aside|nav) class="lgp-faq-/);
+  const inner = next === -1 ? html.slice(from) : html.slice(from, from + next);
+  return inner.replace(/<\/?div[^>]*>/g, "").trim();
+}
+
 function cleanHtml(html: string) {
   return html
     .replace(/\s(class|style|rel|target)="[^"]*"/g, "")
@@ -138,8 +151,8 @@ export async function fetchLgpFaqs(): Promise<SourceFaq[]> {
       sourceModified: `${item.modified_gmt}Z`,
       question: decodeEntities(item.title.rendered),
       categories: item["faq-category"].map((id) => catNames.get(id) ?? String(id)),
-      answer: cleanHtml(block(html, "lgp-faq-answer", "div")),
-      details: cleanHtml(block(html, "lgp-faq-more", "div")),
+      answer: cleanHtml(contentBlock(html, "lgp-faq-answer")),
+      details: cleanHtml(contentBlock(html, "lgp-faq-more")),
       sources: [...source.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) =>
         decodeEntities(m[1].replace(/<[^>]+>/g, "")).trim(),
       ),

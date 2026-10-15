@@ -73,7 +73,9 @@ body {
   text-underline-offset: 2px;
 }
 .faq-html table {
-  width: 100%;
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
   margin: 0 0 0.9em;
   border-collapse: collapse;
   font-size: 0.875rem;
