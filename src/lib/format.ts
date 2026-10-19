@@ -34,3 +34,12 @@ export function formatUsd(value: number | null | undefined) {
 }
 
 export const REGION_PT: Record<string, string> = { Antarctic: "Antártica", Arctic: "Ártico" };
+
+const EN_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// "19 Oct 2026", como vem nos JSON da Let's Go Polar, vira "19 out 2026".
+export function formatFeedDate(text: string) {
+  const m = text.match(/^(\d{1,2}) (\w{3}) (\d{4})$/);
+  const month = m ? EN_MONTHS.indexOf(m[2]) : -1;
+  return m && month >= 0 ? `${m[1]} ${MONTHS_SHORT[month]} ${m[3]}` : text;
+}

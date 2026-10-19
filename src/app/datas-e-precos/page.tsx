@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getBoard } from "@/lib/lgp/source";
 import { tr, trActivity } from "@/lib/lgp/translate";
+import { formatFeedDate } from "@/lib/format";
 import { BoardView, type BoardRow } from "./board-view";
 
 export const revalidate = 900;
@@ -51,7 +52,7 @@ export default async function DatesAndRatesPage({
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <h1 className="text-3xl font-bold text-primary sm:text-4xl">Datas e preços</h1>
-      <BoardView rows={rows} initialRegion={region} updated={board.feed_updated} />
+      <BoardView rows={rows} initialRegion={region} updated={formatFeedDate(board.feed_updated)} />
     </div>
   );
 }

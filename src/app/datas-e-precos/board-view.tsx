@@ -76,7 +76,8 @@ export function BoardView({
   const [tripTypes, setTripTypes] = useState<string[]>([]);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [sort, setSort] = useState<Sort>("date");
-  const [showFilters, setShowFilters] = useState(true);
+  // null: abertos no computador e fechados no celular, até a pessoa clicar.
+  const [filtersOpen, setFiltersOpen] = useState<boolean | null>(null);
   const [limit, setLimit] = useState(PAGE_SIZE);
 
   const inRegion = useMemo(() => rows.filter((r) => !region || r.region === region), [rows, region]);
@@ -149,8 +150,12 @@ export function BoardView({
 
   return (
     <div className="mt-8 grid gap-8 lg:grid-cols-[275px_1fr]">
-      {showFilters && (
-        <aside className="h-fit rounded-xl border border-border bg-white lg:sticky lg:top-36">
+      {filtersOpen !== false && (
+        <aside
+          className={`h-fit rounded-xl border border-border bg-white lg:sticky lg:top-36 ${
+            filtersOpen === null ? "hidden lg:block" : ""
+          }`}
+        >
           <div className="space-y-3 p-3">
             <input
               type="search"
@@ -222,15 +227,26 @@ export function BoardView({
         </aside>
       )}
 
-      <section className={showFilters ? "" : "lg:col-span-2"}>
+      <section className={filtersOpen === false ? "lg:col-span-2" : ""}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setShowFilters((v) => !v)}
+              onClick={() =>
+                setFiltersOpen((v) => (v === null ? window.matchMedia("(min-width: 1024px)").matches === false : !v))
+              }
               className="rounded-md border border-border px-3 py-2 text-sm font-medium text-primary hover:bg-surface-muted"
             >
-              {showFilters ? "Esconder filtros" : "Mostrar filtros"}
+              {filtersOpen === null ? (
+                <>
+                  <span className="lg:hidden">Mostrar filtros</span>
+                  <span className="hidden lg:inline">Esconder filtros</span>
+                </>
+              ) : filtersOpen ? (
+                "Esconder filtros"
+              ) : (
+                "Mostrar filtros"
+              )}
             </button>
             <p className="text-sm text-muted-foreground">
               <strong className="text-lg text-primary">{filtered.length} viagens</strong> disponíveis
