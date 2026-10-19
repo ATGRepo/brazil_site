@@ -42,8 +42,26 @@ Não use o caminho dele (Novamira, senha de aplicativo, `$wpdb`) a partir daqui.
 Preço, data e disponibilidade não se traduzem e podem ser atualizados direto do
 feed. Textos são traduzidos uma vez e de novo só quando mudam.
 
-Fotos são da Let's Go Polar e das operadoras. Não publique imagens no
-Destinos Polares sem confirmação do direito de uso.
+Também são públicos `letsgopolar.com/dates-board/browse.json` (saídas que dá
+para reservar, usado no quadro de datas) e `letsgopolar.com/reviews-proto/reviews.json`
+(avaliações de clientes). A base de conhecimento (`kb/` e `kb-modular/` no
+letsgopolar-desk) é fonte para textos novos.
+
+## O site é um clone da Let's Go Polar
+
+Decisão de 19 Oct 2026, com o Ricardo:
+
+1. O Destinos Polares é o letsgopolar.com traduzido para o português, com o mesmo
+   layout, cores e organização das páginas. Muda o nome e o logo.
+2. Preço, data, cabine e disponibilidade vêm dos JSON da Let's Go Polar a cada
+   15 minutos. Não há cópia própria desses dados.
+3. Textos são traduzidos uma vez e guardados pela versão em inglês. Se o texto
+   em inglês muda, só ele volta para a tradução.
+4. As fotos da Let's Go Polar e das operadoras podem ser usadas, carregadas do
+   próprio letsgopolar.com.
+5. Formulários de contato e de pedido de viagem enviam para o email do Destinos
+   Polares. Nunca para os endpoints da Let's Go Polar (`/wp-json/lgp/v1/*`,
+   `submit-request.php`), porque isso seria escrever no sistema deles.
 
 ## Credenciais
 
