@@ -54,3 +54,6 @@ next-env.d.ts
 /.agents/
 /.windsurf/
 /skills-lock.json
+
+# Listas de pendências geradas pelos scripts lgp:*:check
+/content/lgp/*.pending.json

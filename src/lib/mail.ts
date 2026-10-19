@@ -46,7 +46,7 @@ export async function sendInquiryEmail(input: InquiryEmailInput) {
     `Nome: ${input.name}`,
     `Email: ${input.email}`,
     input.phone ? `Telefone: ${input.phone}` : null,
-    input.expeditionName ? `Expedição de interesse: ${input.expeditionName}` : null,
+    input.expeditionName ? `Viagem de interesse: ${input.expeditionName}` : null,
     "",
     "Mensagem:",
     input.message,

@@ -10,7 +10,9 @@
     "postinstall": "prisma generate",
     "seed": "tsx prisma/seed.ts",
     "lgp:faqs:check": "tsx scripts/sync-lgp-faqs.ts check",
-    "lgp:faqs:import": "tsx scripts/sync-lgp-faqs.ts import"
+    "lgp:faqs:import": "tsx scripts/sync-lgp-faqs.ts import",
+    "lgp:strings:check": "tsx scripts/sync-lgp-strings.ts check",
+    "lgp:strings:merge": "tsx scripts/sync-lgp-strings.ts merge"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.9.1",

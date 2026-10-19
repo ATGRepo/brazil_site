@@ -9,7 +9,8 @@ const inquirySchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome completo."),
   email: z.string().trim().email("Informe um email válido."),
   phone: z.string().trim().optional(),
-  expeditionId: z.string().trim().optional(),
+  tripLabel: z.string().trim().max(400).optional(),
+  tripSlug: z.string().trim().regex(/^[a-z0-9-]+$/).max(200).optional(),
   message: z.string().trim().min(10, "Conte um pouco mais sobre o que você procura."),
 });
 
@@ -21,7 +22,8 @@ export async function submitInquiry(
     name: formData.get("name"),
     email: formData.get("email"),
     phone: formData.get("phone"),
-    expeditionId: formData.get("expeditionId"),
+    tripLabel: formData.get("tripLabel") ?? undefined,
+    tripSlug: formData.get("tripSlug") ?? undefined,
     message: formData.get("message"),
   });
 
@@ -33,19 +35,17 @@ export async function submitInquiry(
     };
   }
 
-  const { name, email, phone, expeditionId, message } = validated.data;
-
-  const expedition = expeditionId
-    ? await prisma.expedition.findUnique({ where: { id: expeditionId } })
-    : null;
+  const { name, email, phone, tripLabel, tripSlug, message } = validated.data;
+  const tripLine = tripLabel
+    ? `${tripLabel}${tripSlug ? ` (https://letsgopolar.com/all-trips/${tripSlug}/)` : ""}`
+    : undefined;
 
   const inquiry = await prisma.inquiry.create({
     data: {
       name,
       email,
       phone: phone || null,
-      message,
-      expeditionId: expedition?.id ?? null,
+      message: tripLine ? `Viagem: ${tripLine}\n\n${message}` : message,
     },
   });
 
@@ -55,7 +55,7 @@ export async function submitInquiry(
       email,
       phone,
       message,
-      expeditionName: expedition?.name,
+      expeditionName: tripLine,
     });
     await prisma.inquiry.update({
       where: { id: inquiry.id },

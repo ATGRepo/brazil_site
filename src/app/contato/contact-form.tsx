@@ -4,14 +4,12 @@ import { useActionState } from "react";
 import { submitInquiry } from "./actions";
 import { initialContactFormState } from "./contact-form-state";
 
-type ExpeditionOption = { id: string; name: string };
-
 export function ContactForm({
-  expeditions,
-  defaultExpeditionId,
+  tripLabel,
+  tripSlug,
 }: {
-  expeditions: ExpeditionOption[];
-  defaultExpeditionId?: string;
+  tripLabel?: string;
+  tripSlug?: string;
 }) {
   const [state, formAction, pending] = useActionState(
     submitInquiry,
@@ -80,26 +78,8 @@ export function ContactForm({
         </div>
       </div>
 
-      {expeditions.length > 0 && (
-        <div>
-          <label htmlFor="expeditionId" className="block text-sm font-medium text-foreground">
-            Expedição de interesse (opcional)
-          </label>
-          <select
-            id="expeditionId"
-            name="expeditionId"
-            defaultValue={defaultExpeditionId ?? ""}
-            className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 text-foreground focus:border-primary focus:outline-none"
-          >
-            <option value="">Não sei ainda / quero orientação</option>
-            {expeditions.map((expedition) => (
-              <option key={expedition.id} value={expedition.id}>
-                {expedition.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+      {tripLabel && <input type="hidden" name="tripLabel" value={tripLabel} />}
+      {tripSlug && <input type="hidden" name="tripSlug" value={tripSlug} />}
 
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-foreground">

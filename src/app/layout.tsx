@@ -1,33 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Destinos Polares | Expedições à Antártica",
+    default: "Destinos Polares | Expedições à Antártica e ao Ártico",
     template: "%s | Destinos Polares",
   },
   description:
-    "Expedições marítimas à Antártica, Geórgia do Sul e Ilhas Malvinas. Solicite informações e monte sua viagem com nossa equipe.",
+    "Expedições polares à Antártica e ao Ártico, com datas, cabines e preços atualizados. Fale com a nossa equipe para planejar sua viagem.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <SiteHeader />
