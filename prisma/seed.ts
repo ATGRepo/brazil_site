@@ -288,7 +288,7 @@ async function main() {
   const faqs = await importFaqs(prisma, loadTranslations());
   console.log(`FAQs: ${faqs.created} criadas, ${faqs.updated} atualizadas.`);
 
-  console.log("Seed concluído: destinos, embarcações, expedições e FAQ.");
+  console.log("Seed concluído.");
 }
 
 main()
