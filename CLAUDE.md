@@ -101,6 +101,10 @@ todas as viagens que usam o mesmo texto em inglês.
 Hostinger, Node.js Web App, a partir do branch `main`. Cada push no `main` vai
 para o ar. Trabalhe em outro branch e mescle no `main` só com o ok do Ricardo.
 
+O build usa webpack (`next build --webpack`). O Turbopack falha no build da
+Hostinger: ele abre um processo Node separado para o PostCSS, e o ambiente de
+build não deixa o processo conectar. Não volte para o Turbopack sem testar lá.
+
 ## Antes de commitar
 
 `npx tsc --noEmit`, `npm run lint` e `npm run build` precisam passar.
