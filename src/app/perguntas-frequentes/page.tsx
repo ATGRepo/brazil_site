@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPublishedFaqItems } from "@/lib/content";
+import { getFaqGroups } from "@/lib/faqs";
 
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Perguntas Frequentes",
   description: "Dúvidas comuns sobre expedições à Antártica: melhor época, documentação, vida a bordo e reservas.",
 };
 
-export default async function FaqPage() {
-  const groups = await getPublishedFaqItems();
+export default function FaqPage() {
+  const groups = getFaqGroups();
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
@@ -30,7 +29,7 @@ export default async function FaqPage() {
             <div className="mt-4 space-y-4">
               {group.questions.map((item) => (
                 <details
-                  key={item.id}
+                  key={item.slug}
                   className="group rounded-lg border border-border bg-surface p-4 open:bg-surface"
                 >
                   <summary className="cursor-pointer list-none font-medium text-foreground marker:content-none">
@@ -41,22 +40,16 @@ export default async function FaqPage() {
                       </span>
                     </span>
                   </summary>
-                  {item.answer.trimStart().startsWith("<") ? (
-                    <div
-                      className="faq-html mt-3 text-sm text-foreground/90"
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
-                    />
-                  ) : (
-                    <p className="mt-3 text-sm text-foreground/90">{item.answer}</p>
-                  )}
-                  {item.slug && (
-                    <Link
-                      href={`/perguntas-frequentes/${item.slug}`}
-                      className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
-                    >
-                      Ler a resposta completa →
-                    </Link>
-                  )}
+                  <div
+                    className="faq-html mt-3 text-sm text-foreground/90"
+                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                  />
+                  <Link
+                    href={`/perguntas-frequentes/${item.slug}`}
+                    className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
+                  >
+                    Ler a resposta completa →
+                  </Link>
                 </details>
               ))}
             </div>

@@ -1,7 +1,6 @@
 "use server";
 
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
 import { sendInquiryEmail } from "@/lib/mail";
 import type { ContactFormState } from "./contact-form-state";
 
@@ -40,15 +39,6 @@ export async function submitInquiry(
     ? `${tripLabel}${tripSlug ? ` (https://letsgopolar.com/all-trips/${tripSlug}/)` : ""}`
     : undefined;
 
-  const inquiry = await prisma.inquiry.create({
-    data: {
-      name,
-      email,
-      phone: phone || null,
-      message: tripLine ? `Viagem: ${tripLine}\n\n${message}` : message,
-    },
-  });
-
   try {
     await sendInquiryEmail({
       name,
@@ -57,20 +47,14 @@ export async function submitInquiry(
       message,
       expeditionName: tripLine,
     });
-    await prisma.inquiry.update({
-      where: { id: inquiry.id },
-      data: { emailStatus: "sent" },
-    });
   } catch (error) {
+    // Sem banco de dados, o email é o único registro do pedido. Se ele falhar,
+    // a pessoa precisa saber para escrever direto.
     console.error("Falha ao enviar email de solicitação:", error);
-    await prisma.inquiry.update({
-      where: { id: inquiry.id },
-      data: { emailStatus: "failed" },
-    });
     return {
       status: "error",
       message:
-        "Não foi possível enviar sua solicitação por email agora. Tente novamente em instantes ou escreva diretamente para o email de contato no rodapé da página.",
+        "Não foi possível enviar sua solicitação agora. Tente de novo em instantes ou escreva direto para contato@destinospolares.com.br.",
     };
   }
 

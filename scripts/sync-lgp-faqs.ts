@@ -1,24 +1,22 @@
-// Sincroniza as FAQs de letsgopolar.com com o banco do Destinos Polares.
+// Compara as FAQs de letsgopolar.com com as traduções.
 //
-//   npm run lgp:faqs:check    compara letsgopolar.com com as traduções e grava
-//                             o que falta traduzir em content/lgp/faqs.pending.json
-//   npm run lgp:faqs:import   grava as traduções de content/lgp/faqs.pt.json no banco
+//   npm run lgp:faqs:check   lista FAQs novas, alteradas e removidas em
+//                            letsgopolar.com e grava o texto em inglês do que
+//                            falta traduzir em content/lgp/faqs.pending.json
+//
+// O site lê content/lgp/faqs.pt.json direto, então uma tradução nova aparece
+// assim que o arquivo é atualizado. A checagem também valida esse arquivo.
 
-import "dotenv/config";
 import { writeFileSync, rmSync } from "node:fs";
-import { PrismaClient } from "../src/generated/prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import {
-  PENDING_FILE,
-  compare,
-  fetchLgpFaqs,
-  importFaqs,
-  loadTranslations,
-} from "./lgp/faqs";
+import { buildFaqs, loadTranslations } from "../src/lib/faqs";
+import { PENDING_FILE, compare, fetchLgpFaqs } from "./lgp/faqs";
 
 async function check() {
+  const translations = loadTranslations();
+  buildFaqs(translations);
+
   const live = await fetchLgpFaqs();
-  const { missing, outdated, removed } = compare(live, loadTranslations());
+  const { missing, outdated, removed } = compare(live, translations);
 
   console.log(`letsgopolar.com: ${live.length} FAQs`);
   console.log(`Sem tradução: ${missing.length}`);
@@ -39,29 +37,7 @@ async function check() {
   }
 }
 
-async function runImport() {
-  const prisma = new PrismaClient({
-    adapter: new PrismaBetterSqlite3({ url: process.env.DATABASE_URL ?? "file:./dev.db" }),
-  });
-  try {
-    const result = await importFaqs(prisma, loadTranslations());
-    console.log(
-      `FAQs: ${result.created} criadas, ${result.updated} atualizadas, ` +
-        `${result.skipped} travadas (locked), ${result.unpublished} despublicadas, ` +
-        `${result.examplesRemoved} de exemplo removidas.`,
-    );
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-const command = process.argv[2];
-const run = command === "check" ? check : command === "import" ? runImport : null;
-if (!run) {
-  console.error("Uso: tsx scripts/sync-lgp-faqs.ts <check|import>");
-  process.exit(2);
-}
-run().catch((error) => {
+check().catch((error) => {
   console.error(error instanceof Error ? error.message : error);
   process.exit(1);
 });

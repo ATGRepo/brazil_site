@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,6 +11,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "./" },
+  openGraph: { siteName: "Destinos Polares", locale: "pt_BR", type: "website" },
   title: {
     default: "Destinos Polares | Expedições à Antártica e ao Ártico",
     template: "%s | Destinos Polares",

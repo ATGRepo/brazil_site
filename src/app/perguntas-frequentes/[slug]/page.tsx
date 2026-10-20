@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getFaqItemBySlug, getFaqItemsBySlugs, parseJsonArray } from "@/lib/content";
+import { getAllFaqSlugs, getFaq, getFaqsBySlugs } from "@/lib/faqs";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() {
+  return getAllFaqSlugs().map((slug) => ({ slug }));
+}
 
 function plainText(html: string) {
   return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
@@ -13,7 +15,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/perguntas-frequentes/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const faq = await getFaqItemBySlug(slug);
+  const faq = getFaq(slug);
   if (!faq) return {};
   return {
     title: faq.question,
@@ -21,19 +23,18 @@ export async function generateMetadata({
   };
 }
 
-// O HTML das respostas vem de content/lgp/faqs.pt.json e é validado na importação
-// (scripts/lgp/faqs.ts aceita só tags de texto simples e o atributo href).
+// O HTML das respostas vem de content/lgp/faqs.pt.json e é validado ao carregar
+// (src/lib/faqs.ts aceita só tags de texto simples e o atributo href).
 export default async function FaqItemPage({
   params,
 }: PageProps<"/perguntas-frequentes/[slug]">) {
   const { slug } = await params;
-  const faq = await getFaqItemBySlug(slug);
+  const faq = getFaq(slug);
 
   if (!faq) notFound();
 
-  const sources = parseJsonArray(faq.sources);
-  const related = await getFaqItemsBySlugs(parseJsonArray(faq.related));
-  const isHtml = faq.answer.trimStart().startsWith("<");
+  const sources = faq.sources;
+  const related = getFaqsBySlugs(faq.related);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
@@ -46,14 +47,10 @@ export default async function FaqItemPage({
       </p>
       <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">{faq.question}</h1>
 
-      {isHtml ? (
-        <div
-          className="faq-html mt-8 border-l-2 border-ice pl-5 text-lg text-foreground"
-          dangerouslySetInnerHTML={{ __html: faq.answer }}
-        />
-      ) : (
-        <p className="mt-8 border-l-2 border-ice pl-5 text-lg text-foreground">{faq.answer}</p>
-      )}
+      <div
+        className="faq-html mt-8 border-l-2 border-ice pl-5 text-lg text-foreground"
+        dangerouslySetInnerHTML={{ __html: faq.answer }}
+      />
 
       {faq.details && (
         <div

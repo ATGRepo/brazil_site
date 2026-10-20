@@ -81,20 +81,26 @@ O Destinos Polares tem marca própria. Textos que apresentam a Let's Go Polar em
 primeira pessoa não são publicados como estão. Por isso a categoria "Sobre a
 Let's Go Polar" entra despublicada.
 
-## FAQs
+## FAQs e traduções
 
-As FAQs são traduções de letsgopolar.com/faqs. O fluxo está no README:
+Não há banco de dados. As páginas leem `content/lgp/faqs.pt.json` (FAQs) e
+`content/lgp/strings.pt.json` (textos das viagens) direto do disco. O fluxo de
+atualização está no README:
 
 ```
-npm run lgp:faqs:check    o que é novo, mudou ou saiu em letsgopolar.com
-npm run lgp:faqs:import   grava content/lgp/faqs.pt.json no banco
+npm run lgp:strings:check   textos das viagens que faltam traduzir
+npm run lgp:strings:merge   junta traduções novas na memória
+npm run lgp:faqs:check      FAQs novas, alteradas ou removidas em letsgopolar.com
 ```
 
-`content/lgp/faqs.pt.json` é a fonte. Não edite FAQs vindas da Let's Go Polar
-direto no banco, a próxima importação sobrescreve. Se uma edição manual precisa
-ficar, marque o item com `locked = true`.
+Edite as traduções nesses arquivos. Uma tradução de texto de viagem vale para
+todas as viagens que usam o mesmo texto em inglês.
+
+## Deploy
+
+Hostinger, Node.js Web App, a partir do branch `main`. Cada push no `main` vai
+para o ar. Trabalhe em outro branch e mescle no `main` só com o ok do Ricardo.
 
 ## Antes de commitar
 
-`npx tsc --noEmit` e `npm run lint` precisam passar. Se mexer no schema, crie a
-migração com `npx prisma migrate dev --name <nome>`.
+`npx tsc --noEmit`, `npm run lint` e `npm run build` precisam passar.

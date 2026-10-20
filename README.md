@@ -1,117 +1,60 @@
 # Destinos Polares
 
-Site em português de expedições à Antártica, Geórgia do Sul e Ilhas
-Malvinas. O conteúdo (destinos, expedições, embarcações e perguntas
-frequentes) é dinâmico, vindo de um banco de dados via Prisma — não é
-uma landing page estática. Não há venda ou reserva online: o formulário
-de contato encaminha a solicitação por email para a equipe de atendimento.
+Site em português de expedições polares à Antártica e ao Ártico, publicado em
+destinospolares.com.br. É um clone traduzido do letsgopolar.com: mesmo layout,
+mesmas viagens e os mesmos preços, lidos dos JSON públicos da Let's Go Polar.
+Não há venda online. O formulário de contato envia o pedido por email.
 
-Stack: Next.js (App Router) + TypeScript + Tailwind CSS + Prisma (SQLite
-em desenvolvimento) + Nodemailer.
+Stack: Next.js (App Router) + TypeScript + Tailwind CSS + Nodemailer. Não há
+banco de dados.
 
-## Conteúdo de exemplo
+Leia o `CLAUDE.md` antes de mudar qualquer coisa.
 
-Os textos de destinos, expedições e embarcações no seed (`prisma/seed.ts`)
-são conteúdo de exemplo, escrito para ilustrar a estrutura do site.
-Substitua pelas informações reais da operação antes de publicar em
-produção — diretamente no banco, por um script próprio, ou editando o
-seed e rodando `npm run seed` novamente.
+## De onde vem cada coisa
 
-## Configuração
+| Conteúdo | Origem |
+| --- | --- |
+| Saídas, datas, cabines, preços, disponibilidade | `letsgopolar.com/dates-board/browse.json` e `letsgopolar.com/all-trips/data/<slug>.json`, com cache de 15 minutos |
+| Textos das viagens em português | `content/lgp/strings.pt.json`, memória de tradução chaveada pelo texto em inglês |
+| Perguntas frequentes | `content/lgp/faqs.pt.json`, traduções de letsgopolar.com/faqs |
 
-1. Instale as dependências:
+## Rodar localmente
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+cp .env.example .env   # só é preciso para testar o envio do formulário
+npm run dev
+```
 
-2. Copie `.env.example` para `.env` e preencha as variáveis:
+Acesse [http://localhost:3000](http://localhost:3000).
 
-   ```bash
-   cp .env.example .env
-   ```
+Variáveis de ambiente:
 
-   - `DATABASE_URL`: string de conexão do banco (SQLite por padrão).
-   - `CONTACT_EMAIL`: email que recebe as solicitações do formulário de contato.
-   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`:
-     credenciais SMTP usadas para enviar os emails do formulário de contato.
-     Sem essa configuração, as solicitações continuam sendo salvas no banco,
-     mas o email não é enviado.
+- `CONTACT_EMAIL`: email que recebe os pedidos do formulário de contato.
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`: servidor
+  que envia esses emails. Sem eles, o formulário avisa que não conseguiu enviar.
+- `SITE_URL` (opcional): endereço oficial, usado no sitemap e nas URLs canônicas.
+  O padrão é `https://destinospolares.com.br`.
 
-3. Rode as migrações e popule o banco com conteúdo de exemplo:
+## Manter as traduções em dia
 
-   ```bash
-   npx prisma migrate dev
-   npm run seed
-   ```
+```bash
+npm run lgp:strings:check                      # textos das viagens sem tradução, do mais usado ao menos usado
+npm run lgp:strings:merge -- traducoes.json    # junta { "inglês": "português" } na memória
+npm run lgp:faqs:check                         # FAQs novas, alteradas ou removidas em letsgopolar.com
+```
 
-4. Inicie o servidor de desenvolvimento:
+`lgp:strings:check` grava as pendências em `content/lgp/strings.pending.json`.
+A junção rejeita qualquer tradução cujo HTML não tenha as mesmas tags do original.
+Enquanto um texto não tem tradução, a página mostra o original em inglês.
 
-   ```bash
-   npm run dev
-   ```
-
-   Acesse [http://localhost:3000](http://localhost:3000).
-
-## Estrutura de conteúdo (Prisma)
-
-Modelos em `prisma/schema.prisma`:
-
-- `Destination` — destinos (Península Antártica, Geórgia do Sul, etc.).
-- `Vessel` — embarcações usadas nas expedições.
-- `Expedition` — pacotes/itinerários, com relação N:N com destinos e
-  relação com uma embarcação.
-- `FaqItem` — perguntas frequentes, agrupadas por categoria. As que vêm de
-  letsgopolar.com guardam `sourceId`, `sourceSlug` e `sourceModified`.
-- `Inquiry` — solicitações recebidas pelo formulário de contato (nome,
-  email, mensagem, expedição de interesse e status do envio de email).
-
-Campos de lista (destaques, itinerário, comodidades etc.) são guardados
-como texto JSON, já que SQLite não suporta arrays nativamente — veja os
-helpers de parsing em `src/lib/content.ts`.
-
-## Perguntas frequentes da Let's Go Polar
-
-As FAQs são traduções das perguntas publicadas em
-[letsgopolar.com/faqs](https://letsgopolar.com/faqs/). As traduções ficam em
-`content/lgp/faqs.pt.json`, que é a fonte do que vai para o banco. Cada item
-guarda o id, o slug e a data de alteração da FAQ original, para saber quando a
-versão em inglês mudou depois da tradução.
-
-Fluxo para manter em dia:
-
-1. `npm run lgp:faqs:check` lê a API pública de letsgopolar.com e lista as FAQs
-   novas, as alteradas depois da tradução e as removidas. O texto em inglês do
-   que falta traduzir vai para `content/lgp/faqs.pending.json`.
-2. Traduza esses itens e atualize `content/lgp/faqs.pt.json` (mesmo formato,
-   com `slug` em português e a nova `sourceModified`).
-3. `npm run lgp:faqs:import` grava tudo no banco. Cada resposta aparece em
-   `/perguntas-frequentes/<slug>`.
-
-Regras da importação:
-
-- Atualiza pelo id da FAQ original. Um item com `locked = true` no banco não é
-  sobrescrito, então marque assim o que você editou à mão.
-- FAQs removidas de letsgopolar.com são despublicadas, não apagadas.
-- A categoria "Sobre a Let's Go Polar" entra despublicada.
-- O HTML das respostas só pode ter tags de texto simples e `href`. A importação
-  falha se encontrar outra coisa.
-- Links entre FAQs viram links para as páginas em português. O link do
-  formulário de solicitação de viagem vira `/contato`.
+`lgp:faqs:check` grava o inglês do que falta em `content/lgp/faqs.pending.json`.
+Traduza e atualize `content/lgp/faqs.pt.json` no mesmo formato, com `slug` em
+português e a nova `sourceModified`. A categoria "Sobre a Let's Go Polar" não
+aparece no site.
 
 ## Produção
 
-Para produção, troque o provedor do banco no `prisma/schema.prisma` e no
-`prisma.config.ts` de SQLite para Postgres (ou outro banco suportado),
-ajuste `DATABASE_URL` e rode `npx prisma migrate deploy`. Configure as
-variáveis de SMTP com um provedor de envio de email transacional.
-
-## Scripts
-
-- `npm run dev` — servidor de desenvolvimento.
-- `npm run build` — build de produção.
-- `npm run start` — roda o build de produção.
-- `npm run lint` — checagem de lint.
-- `npm run seed` — popula o banco com o conteúdo de exemplo e as FAQs traduzidas.
-- `npm run lgp:faqs:check` — compara as FAQs de letsgopolar.com com as traduções.
-- `npm run lgp:faqs:import` — grava as FAQs traduzidas no banco.
+O site roda como Node.js Web App na Hostinger, publicado a partir do branch
+`main` do GitHub. Build `npm run build`, início `npm start`, Node 20.9 ou mais
+novo. Configure as variáveis de ambiente acima no painel do app.

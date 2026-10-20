@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getBoard, type BoardTrip } from "@/lib/lgp/source";
 import { tr } from "@/lib/lgp/translate";
-import { prisma } from "@/lib/prisma";
+import { getFirstFaqs } from "@/lib/faqs";
 import { formatDateRange, formatUsd } from "@/lib/format";
 
 export const revalidate = 900;
@@ -29,15 +29,8 @@ function discount(t: BoardTrip) {
 }
 
 export default async function HomePage() {
-  const [board, faqs] = await Promise.all([
-    getBoard(),
-    prisma.faqItem.findMany({
-      where: { published: true, slug: { not: null } },
-      orderBy: { order: "asc" },
-      take: 6,
-      select: { slug: true, question: true },
-    }),
-  ]);
+  const board = await getBoard();
+  const faqs = getFirstFaqs(6);
   const trips = board.trips;
 
   const today = new Date().toISOString().slice(0, 10);
