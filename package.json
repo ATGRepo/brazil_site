@@ -12,8 +12,8 @@
     "lgp:strings:merge": "tsx scripts/sync-lgp-strings.ts merge"
   },
   "dependencies": {
-    "next": "16.3.1",
-    "nodemailer": "^9.0.5",
+    "next": "16.4.3",
+    "nodemailer": "^10.2.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "zod": "^4.4.3"
@@ -25,7 +25,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.1",
+    "eslint-config-next": "16.4.3",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
     "typescript": "^5"
