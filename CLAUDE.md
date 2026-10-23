@@ -77,7 +77,8 @@ Português do Brasil natural e direto, falando com "você". O glossário de term
 polares (pinguins, baleias, focas, lugares) está nas traduções já feitas em
 `content/lgp/faqs.pt.json`. Mantenha os mesmos termos.
 
-O Destinos Polares tem marca própria. Textos que apresentam a Let's Go Polar em
+O Destinos Polares é uma marca Antarctica Travel Group, e o site diz isso no
+topo e no rodapé. Tem nome e logo próprios. Textos que apresentam a Let's Go Polar em
 primeira pessoa não são publicados como estão. Por isso a categoria "Sobre a
 Let's Go Polar" entra despublicada.
 

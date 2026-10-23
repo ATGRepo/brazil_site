@@ -13,7 +13,8 @@ export function SiteFooter() {
           <span className="inline-block rounded-lg bg-white px-3 py-2">
             <Logo />
           </span>
-          <p className="mt-4 max-w-sm text-sm text-white/75">
+          <p className="mt-4 text-sm font-semibold text-white">Uma marca Antarctica Travel Group</p>
+          <p className="mt-2 max-w-sm text-sm text-white/75">
             Expedições polares à Antártica e ao Ártico, com datas, cabines e preços atualizados
             pelas operadoras.
           </p>
@@ -43,7 +44,7 @@ export function SiteFooter() {
 
       <div className="border-t border-white/10 py-4">
         <p className="mx-auto max-w-7xl px-4 text-xs text-white/55 sm:px-6">
-          © {year} Destinos Polares. Preços definidos pelas operadoras, sujeitos a alteração sem aviso.
+          © {year} Destinos Polares, uma marca Antarctica Travel Group. Preços definidos pelas operadoras, sujeitos a alteração sem aviso.
         </p>
       </div>
     </footer>

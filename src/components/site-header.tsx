@@ -28,7 +28,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-white">
       <div className="bg-primary">
-        <div className="mx-auto flex max-w-7xl items-center justify-end gap-4 px-4 py-1.5 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-end gap-4 px-4 py-1.5 sm:justify-between sm:px-6">
+          <p className="hidden text-[13px] text-white/80 sm:block">Uma marca Antarctica Travel Group</p>
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="rounded bg-white px-3 py-0.5 text-[13px] font-medium text-primary hover:bg-surface-muted"
