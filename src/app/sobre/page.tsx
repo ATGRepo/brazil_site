@@ -95,7 +95,7 @@ export default function SobrePage() {
               Também em 2015, nas Cataratas do Iguaçu, o Neill conheceu o Ricardo Nisiide. O Ricardo tinha um
               hostel por lá, e o Neill estava transformando uma Kombi em motorhome. Viraram melhores amigos, e o
               Ricardo entrou para a empresa logo no começo. Hoje ele trabalha de Curitiba. O Neill diz que o
-              Ricardo é &ldquo;tudo&rdquo; para ele e que não teria chegado até aqui sem o amigo.
+              Ricardo foi fundamental e que não teria chegado até aqui sem o amigo.
             </p>
           </div>
         </section>
