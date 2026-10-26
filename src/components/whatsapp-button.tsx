@@ -1,11 +1,7 @@
 // Botão fixo no canto da tela que abre uma conversa no WhatsApp do Destinos Polares.
 
 const WHATSAPP_NUMBER = "5541988203015";
-const WHATSAPP_TEXT = [
-  "Olá! Que bom ter você por aqui.",
-  "A Destinos Polares leva viajantes para os lugares mais remotos do planeta. A temporada da Antártica vai de novembro a março, e a do Ártico vai de abril a outubro.",
-  "Me conte seu nome, o destino que mais te atrai e o mês em que gostaria de viajar. Com isso já preparo as melhores opções de expedição para você.",
-].join("\n\n");
+const WHATSAPP_TEXT = "Olá! Vim pelo site Destinos Polares.";
 
 export function WhatsAppButton() {
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_TEXT)}`;
