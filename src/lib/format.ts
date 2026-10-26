@@ -43,3 +43,9 @@ export function formatFeedDate(text: string) {
   const month = m ? EN_MONTHS.indexOf(m[2]) : -1;
   return m && month >= 0 ? `${m[1]} ${MONTHS_SHORT[month]} ${m[3]}` : text;
 }
+
+// "14 sqm - 150 sqft" vira "14 m² (150 ft²)".
+export function formatSize(size: string) {
+  const m = size.match(/([\d.,]+)\s*sq\s*m.*?([\d.,]+)\s*sq\s*ft/i);
+  return m ? `${m[1]} m² (${m[2]} ft²)` : size.replace(/sqm/gi, "m²").replace(/sqft/gi, "ft²").trim();
+}

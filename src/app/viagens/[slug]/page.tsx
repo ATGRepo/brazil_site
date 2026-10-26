@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { cabinsWithState } from "@/lib/lgp/cabins";
 import { getTrip } from "@/lib/lgp/source";
 import { tr, trActivity, trHtml } from "@/lib/lgp/translate";
-import { REGION_PT, formatDate, formatUsd } from "@/lib/format";
+import { REGION_PT, formatDate, formatSize, formatUsd } from "@/lib/format";
 import { Gallery } from "./gallery";
 
 export const revalidate = 900;
@@ -316,10 +316,4 @@ function Fact({ label, value }: { label: string; value: string }) {
       <dd className="mt-0.5 font-semibold text-primary">{value}</dd>
     </div>
   );
-}
-
-// "14 sqm - 150 sqft" vira "14 m² (150 ft²)".
-function formatSize(size: string) {
-  const m = size.match(/([\d.,]+)\s*sq\s*m.*?([\d.,]+)\s*sq\s*ft/i);
-  return m ? `${m[1]} m² (${m[2]} ft²)` : size.replace(/sqm/gi, "m²").replace(/sqft/gi, "ft²").trim();
 }
