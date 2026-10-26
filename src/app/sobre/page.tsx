@@ -32,6 +32,7 @@ const TEAM = [
   { name: "Muneeba Asghar", role: "Director of Getting Stuff Done", place: "Paquistão" },
   { name: "Nikki Souza", role: "Polar Dream Coordinator", place: "“Uma filha da Terra”" },
   { name: "Chelsea Betancourt", role: "Polar Dream Coordinator", place: "Ramona, Califórnia" },
+  { name: "Emily Steward", role: "Marketing e redes sociais", place: "Tulsa, Oklahoma" },
 ];
 
 const OPERATORS = [
@@ -117,7 +118,7 @@ export default function SobrePage() {
         <section className="mt-14">
           <h2 className="text-2xl font-bold text-primary">A equipe</h2>
           <p className="mt-4 text-[17px] leading-relaxed text-foreground">
-            Uma equipe pequena, espalhada pelo mundo. Todo mundo volta às regiões polares todo
+            Uma equipe pequena, de sete pessoas, espalhada pelo mundo. Todo mundo volta às regiões polares todo
             ano, em navios diferentes e com operadoras diferentes. É daí que vem a comparação que a gente faz
             entre elas.
           </p>
