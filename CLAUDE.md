@@ -73,7 +73,7 @@ Decisão de 19 Oct 2026, com o Ricardo:
 | `/avaliacoes`, `/depoimentos` | `reviews-proto/reviews.json`, `testimonials-proto/testimonials.json` |
 | `/o-que-levar`, `/passagem-de-drake`, `/ciencia-cidada`, `/the-drake-shake`, `/blog/<slug>` | páginas e posts da API do WordPress, limpos por `src/lib/lgp/article.ts` |
 | `/perguntas-frequentes` | `content/lgp/faqs.pt.json` |
-| `/sobre` | base de conhecimento da ATG (`kb/company-and-service`) |
+| `/sobre` | `about-us/` (texto, fotos e vídeo), conferido com a base de conhecimento da ATG (`kb/company-and-service`) |
 
 O menu (`src/components/site-header.tsx`) tem a mesma estrutura do menu de
 letsgopolar.com. O sorteio da ATG (`/atg-giveaway/`) não foi clonado: no Brasil,
