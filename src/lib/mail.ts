@@ -60,3 +60,16 @@ export async function sendInquiryEmail(input: InquiryEmailInput) {
     text: lines.join("\n"),
   });
 }
+
+// Envio genérico dos formulários (lista VIP, newsletter, pedido de viagem, sorteio).
+export async function sendFormEmail(input: { subject: string; replyTo: string; lines: string[] }) {
+  const to = process.env.CONTACT_EMAIL;
+  if (!to) throw new Error("CONTACT_EMAIL não configurado.");
+  await getTransporter().sendMail({
+    from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
+    to,
+    replyTo: input.replyTo,
+    subject: input.subject,
+    text: input.lines.join("\n"),
+  });
+}

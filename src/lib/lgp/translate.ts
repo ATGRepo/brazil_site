@@ -15,7 +15,7 @@ import type { BoardTrip, TripDetail } from "./source";
 
 export const STRINGS_FILE = path.join(process.cwd(), "content/lgp/strings.pt.json");
 
-const BLOCK = /<(p|li|h[1-6]|td|th|figcaption|blockquote)\b[^>]*>([\s\S]*?)<\/\1>/gi;
+const BLOCK = /<(p|li|h[1-6]|td|th|figcaption|blockquote|summary)\b[^>]*>([\s\S]*?)<\/\1>/gi;
 
 export function normText(text: string) {
   return text.replace(/&nbsp;| /g, " ").replace(/\s+/g, " ").trim();
@@ -29,8 +29,9 @@ function hasWords(text: string) {
 // formatação e atributos de evento. O que sobra é estrutura e texto.
 export function cleanHtml(html: string) {
   return html
-    .replace(/<(script|style|iframe|object|embed|form)\b[\s\S]*?<\/\1>/gi, "")
-    .replace(/<(script|iframe|object|embed|input|button)\b[^>]*\/?>/gi, "")
+    .replace(/<(script|style|object|embed|form)\b[\s\S]*?<\/\1>/gi, "")
+    .replace(/<iframe\b(?![^>]*src="https:\/\/(?:www\.youtube(?:-nocookie)?\.com|player\.vimeo\.com|embed\.windy\.com|open\.spotify\.com)\/)[^>]*>[\s\S]*?<\/iframe>/gi, "")
+    .replace(/<(script|object|embed|input|button)\b[^>]*\/?>/gi, "")
     .replace(/\s(on\w+|style|class|id|data-[\w-]+)="[^"]*"/gi, "")
     .replace(/\s(on\w+|style|class|id)='[^']*'/gi, "")
     .replace(/href="\s*javascript:[^"]*"/gi, 'href="#"')
