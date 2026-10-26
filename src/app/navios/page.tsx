@@ -29,10 +29,10 @@ export default async function ShipsPage() {
             <div className="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {byOperator.get(op)!.map((ship) => (
                 <Link key={ship.slug} href={`/navios/${ship.slug}`} className="group overflow-hidden rounded-xl border border-border bg-white hover:border-accent">
-                  <div className="aspect-[4/3] bg-surface-muted">
+                  <div className="relative overflow-hidden aspect-[4/3] bg-surface-muted">
                     {ship.photo && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={ship.photo} alt="" loading="lazy" className="h-full w-full object-cover" />
+                      <img src={ship.photo} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
                     )}
                   </div>
                   <div className="p-4">

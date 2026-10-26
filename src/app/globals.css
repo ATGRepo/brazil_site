@@ -181,3 +181,6 @@ body {
   padding-left: 1rem;
   color: var(--color-primary);
 }
+.lgp-article p > a + a {
+  margin-left: 1.25rem;
+}

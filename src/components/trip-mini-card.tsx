@@ -17,7 +17,7 @@ export function TripMiniCard({ trip, note }: { trip: BoardTrip; note?: string })
       <div className="relative aspect-[4/3] bg-surface-muted">
         {trip.hero && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={trip.hero} alt="" loading="lazy" className="h-full w-full object-cover" />
+          <img src={trip.hero} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
         )}
         <span className="absolute left-3 top-3 rounded-full bg-primary/90 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
           {REGION_PT[trip.region] ?? trip.region}

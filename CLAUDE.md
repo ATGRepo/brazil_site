@@ -63,6 +63,25 @@ Decisão de 19 Oct 2026, com o Ricardo:
    Polares. Nunca para os endpoints da Let's Go Polar (`/wp-json/lgp/v1/*`,
    `submit-request.php`), porque isso seria escrever no sistema deles.
 
+## Páginas e de onde vêm
+
+| Página aqui | Fonte em letsgopolar.com |
+| --- | --- |
+| `/datas-e-precos`, `/viagens/<slug>`, `/promocoes`, `/viagens-em-grupo`, `/lista-vip` | `dates-board/browse.json` e `all-trips/data/<slug>.json` |
+| `/navios`, `/navios/<slug>` | `all-ships-proto/ships.json` e `ship-proto/data/<slug>.json` |
+| `/operadoras`, `/operadoras/<slug>` | `company-proto/companies.json` e `company-proto/data/<slug>.json` |
+| `/avaliacoes`, `/depoimentos` | `reviews-proto/reviews.json`, `testimonials-proto/testimonials.json` |
+| `/o-que-levar`, `/passagem-de-drake`, `/ciencia-cidada`, `/the-drake-shake`, `/blog/<slug>` | páginas e posts da API do WordPress, limpos por `src/lib/lgp/article.ts` |
+| `/perguntas-frequentes` | `content/lgp/faqs.pt.json` |
+| `/sobre` | base de conhecimento da ATG (`kb/company-and-service`) |
+
+O menu (`src/components/site-header.tsx`) tem a mesma estrutura do menu de
+letsgopolar.com. O sorteio da ATG (`/atg-giveaway/`) não foi clonado: no Brasil,
+sorteio promocional precisa de autorização prévia do governo.
+
+Formulários (`src/app/_forms/actions.ts`): lista VIP, newsletter e pedido de
+viagem enviam para `CONTACT_EMAIL`. O campo escondido `company` barra robôs.
+
 ## Credenciais
 
 Nunca peça senha no chat e nunca grave credenciais no repositório. `.env` é

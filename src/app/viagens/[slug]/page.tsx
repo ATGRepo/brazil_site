@@ -142,10 +142,10 @@ export default async function TripPage({ params }: PageProps<"/viagens/[slug]">)
         <div className="mt-6 divide-y divide-border">
           {cabins.map(({ cabin, st }, i) => (
             <article key={cabin.name + i} className="grid gap-5 py-6 sm:grid-cols-[260px_1fr_170px]">
-              <div className="aspect-[6/5] overflow-hidden rounded-lg bg-surface-muted">
+              <div className="relative overflow-hidden aspect-[6/5] overflow-hidden rounded-lg bg-surface-muted">
                 {cabin.photo && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={cabin.photo} alt={tr(cabin.name)} loading="lazy" className="h-full w-full object-cover" />
+                  <img src={cabin.photo} alt={tr(cabin.name)} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
                 )}
               </div>
               <div>

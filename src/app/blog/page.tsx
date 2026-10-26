@@ -24,10 +24,10 @@ export default async function BlogPage() {
             href={`/blog/${post.slug}`}
             className="group flex flex-col overflow-hidden rounded-xl border border-border bg-white hover:border-accent"
           >
-            <div className="aspect-[16/9] bg-surface-muted">
+            <div className="relative overflow-hidden aspect-[16/9] bg-surface-muted">
               {post.image && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={post.image} alt="" loading="lazy" className="h-full w-full object-cover" />
+                <img src={post.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
               )}
             </div>
             <div className="flex flex-1 flex-col p-5">

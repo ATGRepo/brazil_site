@@ -33,7 +33,7 @@ export function formatUsd(value: number | null | undefined) {
   }).format(value);
 }
 
-export const REGION_PT: Record<string, string> = { Antarctic: "Antártica", Arctic: "Ártico" };
+export const REGION_PT: Record<string, string> = { Antarctic: "Antártica", Antarctica: "Antártica", Arctic: "Ártico" };
 
 const EN_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 

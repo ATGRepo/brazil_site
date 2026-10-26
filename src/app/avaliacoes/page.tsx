@@ -15,18 +15,22 @@ export const metadata: Metadata = {
 const EN_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const ANIMALS: Record<string, string> = {
-  penguins: "pinguins",
   whales: "baleias",
-  seals: "focas",
-  "polar bears": "ursos-polares",
-  "polar-bears": "ursos-polares",
-  walrus: "morsas",
-  reindeer: "renas",
-  birds: "aves",
-  "arctic fox": "raposa-do-ártico",
-  albatross: "albatrozes",
   orcas: "orcas",
+  seals: "focas",
+  penguin_chicks: "filhotes de pinguim",
+  emperor_penguins: "pinguins-imperadores",
+  polar_bears: "ursos-polares",
+  walruses: "morsas",
+  arctic_foxes: "raposas-do-ártico",
+  reindeer: "renas",
+  puffins: "papagaios-do-mar",
+  belugas: "belugas",
+  narwhal: "narval",
 };
+
+// Ilustração "Sorry! No photos" que a Let's Go Polar usa quando o cliente não mandou foto.
+const NO_PHOTO = /pedem-desculpas/;
 
 function Stars({ n }: { n: number }) {
   return (
@@ -54,7 +58,7 @@ export default async function ReviewsPage() {
           const month = EN_MONTHS.indexOf(r.sailed.month);
           return (
             <article key={r.slug} className="flex flex-col overflow-hidden rounded-xl border border-border bg-white">
-              {r.photo && (
+              {r.photo && !NO_PHOTO.test(r.photo) && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={r.photo} alt="" loading="lazy" className="aspect-[16/10] w-full object-cover" />
               )}
@@ -68,7 +72,9 @@ export default async function ReviewsPage() {
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {month >= 0 ? `${MONTHS_LONG[month]} de ${r.sailed.year}` : r.sailed.year}
-                  {r.animals.length > 0 && ` · viu ${r.animals.map((a) => ANIMALS[a] ?? a).join(", ")}`}
+                  {r.animals.includes("circle_crossing") && " · cruzou o Círculo Polar Antártico"}
+                  {r.animals.some((a) => a in ANIMALS) &&
+                    ` · viu ${r.animals.filter((a) => a in ANIMALS).map((a) => ANIMALS[a]).join(", ")}`}
                 </p>
               </div>
             </article>

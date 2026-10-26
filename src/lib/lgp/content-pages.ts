@@ -30,9 +30,13 @@ export async function getCleanArticle(source: ArticleSource) {
   return { ...page, html: cleanArticle(page.html, await linkMapper()) };
 }
 
-// Versão traduzida, para as páginas.
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL ?? "contato@destinospolares.com.br";
+
+// Versão traduzida, para as páginas. O email geral da ATG vira o do Destinos
+// Polares, para o cliente brasileiro escrever para a caixa certa.
 export async function getTranslatedArticle(source: ArticleSource) {
   const page = await getCleanArticle(source);
   if (!page) return null;
-  return { ...page, title: tr(page.title), html: trHtml(page.html) };
+  const html = trHtml(page.html).replace(/info@antarcticatravelgroup\.com/g, CONTACT_EMAIL);
+  return { ...page, title: tr(page.title), html };
 }
