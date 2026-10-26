@@ -8,6 +8,9 @@ export const revalidate = 900;
 
 const HERO_IMAGE = "https://letsgopolar.com/wp-content/uploads/2026/08/AAKayakD1Fuji-Neill-4141.jpg";
 
+const FOUNDER_IMAGE =
+  "https://letsgopolar.com/wp-content/uploads/2025/10/269974334_10165706578840585_4849978757935040084_n1-1-1-768x658.jpg";
+
 const REGIONS = [
   {
     key: "Antarctic",
@@ -192,6 +195,34 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      <section className="border-t-2 border-accent bg-gradient-to-b from-[#032234] to-primary text-white">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-14 sm:px-6 md:grid-cols-[220px_1fr] md:gap-10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={FOUNDER_IMAGE}
+            alt="Neill Drake pilotando um bote Zodiac na Antártica"
+            loading="lazy"
+            className="aspect-square w-40 object-cover md:w-full"
+          />
+          <div>
+            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#7fd3ea]">
+              Conheça o fundador
+              <span className="h-px flex-1 border-t border-dashed border-[#7fd3ea]/60" aria-hidden="true" />
+            </p>
+            <blockquote className="mt-4 text-2xl font-medium leading-snug sm:text-3xl">
+              Você nunca vai conseguir explicar a conexão emocional que criou com a Antártica. Só vai entender se
+              viver isso você mesmo.
+            </blockquote>
+            <p className="mt-5 text-sm text-white/80">
+              <b className="text-white">Neill Drake</b> · Fundador e presidente, guia de expedições polares
+            </p>
+            <Link href="/sobre#equipe" className="mt-2 inline-block text-sm font-semibold text-[#7fd3ea] hover:underline">
+              Conheça a equipe →
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {faqs.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
