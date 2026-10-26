@@ -115,7 +115,7 @@ export default function SobrePage() {
           </div>
         </section>
 
-        <section className="mt-14">
+        <section id="equipe" className="mt-14 scroll-mt-36">
           <h2 className="text-2xl font-bold text-primary">A equipe</h2>
           <p className="mt-4 text-[17px] leading-relaxed text-foreground">
             Uma equipe pequena, de sete pessoas, espalhada pelo mundo. Todo mundo volta às regiões polares todo
@@ -177,7 +177,27 @@ export default function SobrePage() {
           </ul>
         </section>
 
-        <section className="mt-14 rounded-xl border border-border bg-surface-muted p-6">
+        <section id="somos-confiaveis" className="mt-14 scroll-mt-36">
+          <h2 className="text-2xl font-bold text-primary">Somos confiáveis? Confira você mesmo</h2>
+          <div className="mt-4 space-y-4 text-[17px] leading-relaxed text-foreground">
+            <p>
+              Sim. A Antarctica Travel Group, Inc. é uma empresa registrada na Califórnia, com sede em San Diego. A
+              Let&apos;s Go Polar e o Destinos Polares são nomes da mesma empresa: mesma pessoa jurídica, mesmo registro
+              e mesma equipe.
+            </p>
+            <p>
+              O nosso número de registro no estado da Califórnia é 2166968-70, e o número na Travel Consumer Restitution
+              Corporation é 710090. Você pode conferir os dois na busca oficial do Procurador-Geral da Califórnia
+              (California Attorney General).
+            </p>
+            <p>
+              Reservamos expedições polares há oito anos e, nesse tempo, levamos mais de 5.000 viajantes à Antártica e
+              ao Ártico. Se ainda quiser tirar a dúvida, escreva para a gente. Uma pessoa de verdade responde.
+            </p>
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-xl border border-border bg-surface-muted p-6">
           <h2 className="text-lg font-bold text-primary">Dados da empresa</h2>
           <dl className="mt-3 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[auto_1fr]">
             <dt className="text-muted-foreground">Empresa</dt>

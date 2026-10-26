@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { cabinsWithState } from "@/lib/lgp/cabins";
 import { getTrip } from "@/lib/lgp/source";
 import { tr, trActivity, trHtml } from "@/lib/lgp/translate";
-import { REGION_PT, formatDate, formatUsd } from "@/lib/format";
+import { REGION_PT, formatDate, formatSize, formatUsd } from "@/lib/format";
 import { Gallery } from "./gallery";
 
 export const revalidate = 900;
@@ -142,10 +142,10 @@ export default async function TripPage({ params }: PageProps<"/viagens/[slug]">)
         <div className="mt-6 divide-y divide-border">
           {cabins.map(({ cabin, st }, i) => (
             <article key={cabin.name + i} className="grid gap-5 py-6 sm:grid-cols-[260px_1fr_170px]">
-              <div className="aspect-[6/5] overflow-hidden rounded-lg bg-surface-muted">
+              <div className="relative overflow-hidden aspect-[6/5] overflow-hidden rounded-lg bg-surface-muted">
                 {cabin.photo && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={cabin.photo} alt={tr(cabin.name)} loading="lazy" className="h-full w-full object-cover" />
+                  <img src={cabin.photo} alt={tr(cabin.name)} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
                 )}
               </div>
               <div>
@@ -316,10 +316,4 @@ function Fact({ label, value }: { label: string; value: string }) {
       <dd className="mt-0.5 font-semibold text-primary">{value}</dd>
     </div>
   );
-}
-
-// "14 sqm - 150 sqft" vira "14 m² (150 ft²)".
-function formatSize(size: string) {
-  const m = size.match(/([\d.,]+)\s*sq\s*m.*?([\d.,]+)\s*sq\s*ft/i);
-  return m ? `${m[1]} m² (${m[2]} ft²)` : size.replace(/sqm/gi, "m²").replace(/sqft/gi, "ft²").trim();
 }

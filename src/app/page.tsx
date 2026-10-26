@@ -162,7 +162,7 @@ export default async function HomePage() {
                   <div className="relative aspect-[4/3] bg-surface-muted">
                     {t.hero && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={t.hero} alt="" loading="lazy" className="h-full w-full object-cover" />
+                      <img src={t.hero} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
                     )}
                     {discount(t) > 0 && (
                       <span className="absolute left-3 top-3 rounded bg-[#fdf3e2] px-2 py-1 text-xs font-bold text-[#8a5a00]">

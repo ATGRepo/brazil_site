@@ -11,7 +11,44 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { getBoard, getTrip } from "../src/lib/lgp/source";
-import { STRINGS_FILE, boardUnits, cleanHtml, normText, tripUnits } from "../src/lib/lgp/translate";
+import { STRINGS_FILE, boardUnits, cleanHtml, htmlUnits, normText, tripUnits } from "../src/lib/lgp/translate";
+import { ARTICLES, getCleanArticle } from "../src/lib/lgp/content-pages";
+import { getLgpPosts } from "../src/lib/lgp/article";
+import { getCompanies, getCompany, getReviews, getShip, getShips, getTestimonials } from "../src/lib/lgp/fleet";
+
+// Textos das páginas fora das viagens: páginas de texto, blog, navios,
+// operadoras, avaliações e depoimentos.
+export async function pageUnits(): Promise<string[][]> {
+  const out: string[][] = [];
+  const posts = await getLgpPosts();
+  const articles = [
+    ...Object.values(ARTICLES),
+    ...posts.map((p) => ({ slug: p.slug, type: "posts" as const })),
+  ];
+  for (const source of articles) {
+    const page = await getCleanArticle(source);
+    if (page) out.push([page.title, ...htmlUnits(page.html)]);
+  }
+  out.push(posts.flatMap((p) => [p.title, p.excerpt]));
+  for (const card of await getShips()) {
+    const ship = await getShip(card.slug);
+    if (!ship) continue;
+    out.push([
+      ship.type ?? "",
+      ...ship.facilities,
+      ...htmlUnits(ship.description),
+      ...htmlUnits(ship.practical_info),
+      ...ship.cabins.flatMap((c) => [c.name, c.view ?? "", ...htmlUnits(c.description)]),
+    ]);
+  }
+  for (const card of await getCompanies()) {
+    const company = await getCompany(card.slug);
+    if (company?.description) out.push([company.description]);
+  }
+  out.push((await getReviews()).flatMap((r) => [r.excerpt, r.itinerary]));
+  out.push((await getTestimonials()).flatMap((q) => q.text.split(/\n\s*\n/)));
+  return out.map((list) => list.map(normText).filter((t) => /[A-Za-z]{2}/.test(t)));
+}
 
 const PENDING_FILE = path.join(process.cwd(), "content/lgp/strings.pending.json");
 
@@ -35,6 +72,7 @@ async function check() {
     }
   };
   await Promise.all(Array.from({ length: 8 }, worker));
+  for (const units of await pageUnits()) count(units);
 
   const all = [...uses.entries()];
   const pending = all
@@ -78,7 +116,9 @@ function merge(file: string) {
 }
 
 const [command, arg] = process.argv.slice(2);
-if (command === "check") {
+if (process.env.LGP_STRINGS_NO_CLI) {
+  // usado como módulo
+} else if (command === "check") {
   check().catch((e) => {
     console.error(e instanceof Error ? e.message : e);
     process.exit(1);

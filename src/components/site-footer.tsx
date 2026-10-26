@@ -24,8 +24,10 @@ export function SiteFooter() {
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Explorar</p>
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/datas-e-precos" className="hover:underline">Datas e preços</Link></li>
-            <li><Link href="/datas-e-precos?regiao=Antarctic" className="hover:underline">Antártica</Link></li>
-            <li><Link href="/datas-e-precos?regiao=Arctic" className="hover:underline">Ártico</Link></li>
+            <li><Link href="/promocoes" className="hover:underline">Promoções</Link></li>
+            <li><Link href="/navios" className="hover:underline">Navios</Link></li>
+            <li><Link href="/operadoras" className="hover:underline">Operadoras</Link></li>
+            <li><Link href="/blog" className="hover:underline">Blog</Link></li>
             <li><Link href="/perguntas-frequentes" className="hover:underline">Perguntas frequentes</Link></li>
           </ul>
         </div>
@@ -35,6 +37,8 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/sobre" className="hover:underline">Sobre nós</Link></li>
             <li><Link href="/contato" className="hover:underline">Contato</Link></li>
+            <li><Link href="/pedido-de-viagem" className="hover:underline">Pedido de viagem</Link></li>
+            <li><Link href="/lista-vip" className="hover:underline">Lista VIP de ofertas</Link></li>
             <li>
               <a href={`mailto:${CONTACT_EMAIL}`} className="hover:underline">{CONTACT_EMAIL}</a>
             </li>
