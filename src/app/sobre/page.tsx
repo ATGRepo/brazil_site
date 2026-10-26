@@ -53,7 +53,7 @@ const FOUNDER: Person = {
 
 const TEAM: Person[] = [
   {
-    name: "Izabela Drake",
+    name: "Izabela Hudson",
     role: "Cuidado antes e depois da viagem.",
     bio: "O seu principal contato nas semanas antes da viagem e depois que você volta. As dúvidas de última hora ficam com a Bella. Oficialmente, a fada do antes e depois da viagem.",
     place: "San Diego, Califórnia",
